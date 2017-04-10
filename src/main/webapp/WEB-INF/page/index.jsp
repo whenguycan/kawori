@@ -16,21 +16,45 @@
 					<div class="row">
 						<form class="form" action="${ctx }/anime/save/anime" method="post">
 							<input type="hidden" name="a.id" value="${a.id }" />
-							<input type="text" name="a.name" value="${a.name }" />
-							<input type="text" name="a.group" value="${a.group }" />
-							<input type="text" name="a.curr" value="${a.curr }" />
-							<input type="text" name="a.all" value="${a.all }" />
-							<input type="text" name="a.season" value="${a.season }" />
-							<input type="text" name="a.status" value="${a.status }" />
-							<button type="submit">save</button>
+							<div class="form-group">
+								<label for="a_name">name</label>
+								<input type="text" class="form-control" id="a_name" name="a.name" value="${a.name }" />
+							</div>
+							<div class="form-group">
+								<label for="a_group">group</label>
+								<input type="text" class="form-control" id="a_group" name="a.group" value="${a.group }" />
+							</div>
+							<div class="form-group">
+								<label for="a_curr">curr</label>
+								<input type="text" class="form-control" id="a_curr" name="a.curr" value="${a.curr }" />
+							</div>
+							<div class="form-group">
+								<label for="a_all">all</label>
+								<input type="text" class="form-control" id="a_all" name="a.all" value="${a.all }" />
+							</div>
+							<div class="form-group">
+								<label for="a_season">season</label>
+								<input type="text" class="form-control" id="a_season" name="a.season" value="${a.season }" />
+							</div>
+							<div class="form-group">
+								<label for="a_status">status</label>
+								<input type="text" class="form-control" id="a_status" name="a.status" value="${a.status }" />
+							</div>
+							<button type="submit" class="btn btn-default">save</button>
 						</form>
 					</div>
 					<div class="row">
 						<form class="form" action="${ctx }/anime/save/group" method="post">
 							<input type="hidden" name="g.id" value="${g.id }" />
-							<input type="hidden" name="g.pinyinPref" value="${g.pinyinPref }" />
-							<input type="text" name="g.name" value="${g.name }" />
-							<button type="submit">save</button>
+							<div class="form-group">
+								<label for="g_name">name</label>
+								<input type="text" class="form-control" id="g_name" name="g.name" value="${g.name }" />
+							</div>
+							<div class="form-group">
+								<label for="g_pinyinPref">pinyinPref</label>
+								<input type="text" class="form-control" id="g_pinyinPref" name="g.pinyinPref" value="${g.pinyinPref }" />
+							</div>
+							<button type="submit" class="btn btn-default">save</button>
 						</form>
 					</div>
 				</div>
