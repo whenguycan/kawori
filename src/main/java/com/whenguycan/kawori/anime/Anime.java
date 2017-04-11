@@ -1,9 +1,8 @@
 package com.whenguycan.kawori.anime;
 
 import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
-
-import com.whenguycan.kawori.common.IDEntity;
 
 /**
  * 
@@ -11,8 +10,12 @@ import com.whenguycan.kawori.common.IDEntity;
  * @date 2017年4月10日 上午11:21:50
  */
 @Table("t_e_anime")
-public class Anime extends IDEntity{
+public class Anime{
 
+	@Id
+	@Column("ID")
+	private Long id;
+	
 	@Column("f_name")
 	private String name;
 	@Column("f_group")
@@ -61,6 +64,12 @@ public class Anime extends IDEntity{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

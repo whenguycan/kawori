@@ -2,6 +2,8 @@ package com.whenguycan.kawori.common;
 
 import java.util.List;
 
+import org.nutz.dao.Cnd;
+
 /**
  * 
  * @author whenguycan
@@ -9,8 +11,12 @@ import java.util.List;
  */
 public interface IBaseService {
 
-	public <T extends IDEntity> List<T> findAll(Class<T> clazz);
+	public <T> List<T> findList(Class<T> clazz, Cnd cnd);
 	
-	public <T extends IDEntity> T save(Class<T> clazz, T t);
+	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd);
+	
+	public <T> T insert(T t);
+	
+	public <T> int update(T t);
 	
 }

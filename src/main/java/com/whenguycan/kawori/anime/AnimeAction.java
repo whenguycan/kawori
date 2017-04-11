@@ -1,16 +1,17 @@
 package com.whenguycan.kawori.anime;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.whenguycan.kawori.common.BaseAction;
 import com.whenguycan.kawori.common.IBaseService;
+import com.whenguycan.kawori.common.Page;
 
 /**
  * 
@@ -19,49 +20,72 @@ import com.whenguycan.kawori.common.IBaseService;
  */
 @At("/anime")
 @IocBean
-public class AnimeAction {
+public class AnimeAction extends BaseAction{
 	
 	@Inject
 	IBaseService baseService;
+	@Inject
+	Dao dao;
 	
 	@At("/init")
 	@Ok("json")
 	public Object init(HttpServletRequest req){
-		for(int i=0;i<12;i++){
-			Anime a = new Anime();
-			a.setName("anime_"+i);a.setCurr(1);a.setStatus("x");
-			baseService.save(Anime.class, a);
-			Group g = new Group();
-			g.setName("group_"+i);
-			baseService.save(Group.class, g);
-		}
+		clear();
+		insert();
 		return "ok";
 	}
+	private void insert(){
+		for(int i=0;i<22;i++){
+			Anime a = new Anime();
+			a.setName("anime_"+i);a.setCurr(1);a.setStatus("x");
+			dao.insert(a);
+			Group g = new Group();
+			g.setName("group_"+i);
+			dao.insert(g);
+		}
+	}
+	private void clear(){
+		dao.clear(Anime.class);
+		dao.clear(Group.class);
+	}
 	
-	@At("/index")
-	@Ok("jsp:/WEB-INF/page/index.jsp")
-	public void index(HttpServletRequest req){
-		List<Anime> animes = baseService.findAll(Anime.class);
-		req.setAttribute("animes", animes);
-		List<Group> groups = baseService.findAll(Group.class);
-		req.setAttribute("groups", groups);
+	@At("/anime/?")
+	@Ok("jsp:/WEB-INF/page/anime.jsp")
+	public void anime(int pageNo, HttpServletRequest req){
+		Page<Anime> page = new Page<Anime>(pageNo);
+		page = baseService.findPage(Anime.class, page, null);
+		req.setAttribute("page", page);
+	}
+	
+	@At("/group")
+	@Ok("jsp:/WEB-INF/page/group.jsp")
+	public void group(HttpServletRequest req){
+		
 	}
 	
 	@At("/save/anime")
-	@Ok("jsp:/WEB-INF/page/index.jsp")
-	public void saveAnime(String type, @Param("::a.")Anime anime, HttpServletRequest req){
+	@Ok("json")
+	public Object saveAnime(HttpServletRequest req, @Param("::a.")Anime anime){
 		if(anime != null){
-			baseService.save(Anime.class, anime);
+			if(anime.getId() == null){
+				anime = baseService.insert(anime);
+			}else{
+				baseService.update(anime);
+			}
 		}
-		index(req);
+		return getSuccessJson(anime.getId(), "");
 	}
 	
 	@At("/save/group")
-	@Ok("jsp:/WEB-INF/page/index.jsp")
-	public void saveGroup(String type, @Param("::g.")Group group, HttpServletRequest req){
+	@Ok("json")
+	public Object saveGroup(HttpServletRequest req, @Param("::g.")Group group){
 		if(group != null){
-			baseService.save(Group.class, group);
+			if(group.getId() == null){
+				group = baseService.insert(group);
+			}else{
+				baseService.update(group);
+			}
 		}
-		index(req);
+		return getSuccessJson(group.getId(), "");
 	}
 }

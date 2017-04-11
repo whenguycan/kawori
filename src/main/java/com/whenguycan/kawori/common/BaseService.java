@@ -2,7 +2,9 @@ package com.whenguycan.kawori.common;
 
 import java.util.List;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 /**
@@ -20,15 +22,30 @@ public class BaseService implements IBaseService{
 	}
 
 	@Override
-	public <T extends IDEntity> List<T> findAll(Class<T> clazz) {
+	public <T> List<T> findList(Class<T> clazz, Cnd cnd) {
 		return dao.query(clazz, null);
 	}
 	
-	public <T extends IDEntity> T save(Class<T> clazz, T t){
-		if(t.getId() == null){
-			return dao.insert(t);
+	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd){
+		if(page == null){
+			page = new Page<T>();
 		}
-		dao.update(t);
-		return t;
+		Pager pager = dao.createPager(page.getPageNo(), page.getPageSize());
+		List<T> list = dao.query(clazz, cnd, pager);
+		int count = dao.count(clazz, cnd);
+		page.setTotalCount(count);
+		page.setResult(list);
+		page.generatePager();
+		return page;
+	}
+
+	@Override
+	public <T> T insert(T t) {
+		return dao.insert(t);
+	}
+
+	@Override
+	public <T> int update(T t) {
+		return dao.update(t);
 	}
 }
