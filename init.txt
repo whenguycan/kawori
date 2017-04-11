@@ -1,0 +1,23 @@
+
+drop table t_e_anime;
+create table t_e_anime(
+id int(11) primary key auto_increment,
+f_name varchar(255),
+f_group varchar(255),
+f_curr int(11),
+f_all int(11),
+f_season varchar(255),
+f_status varchar(255)
+);
+drop table t_e_group;
+create table t_e_group(
+id int(11) primary key auto_increment,
+f_name varchar(255),
+f_pinyin_pref varchar(255)
+);
+
+delete from t_e_group;
+delete from t_e_anime;
+
+select * from t_e_anime;
+select * from t_e_group;
