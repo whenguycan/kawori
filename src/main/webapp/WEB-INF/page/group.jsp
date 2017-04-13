@@ -1,21 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ include file="script.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Insert title here</title>
-		<link rel="stylesheet" type="text/css" href="${ctx}/static/bootstrap-3.3.7-dist/css/bootstrap.css"/>
-		<script type="text/javascript" src="${ctx }/static/jquery-1.9.1.js"></script>
-		<script type="text/javascript" src="${ctx}/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
-		<script type="text/javascript" src="${ctx }/static/form.js"></script>
 		<style type="text/css">
 			.col-cont{padding-top: 10px;}
 		</style>
 		<script type="text/javascript">
+			var ctx = "${ctx}";
 			$(function(){
-				
+				initSelect();
 			});
+			var pageUrl = "${ctx}/anime/group";
+			function go(pageNo){
+				pageGo(pageNo, pageUrl);
+			};
+			var setting = {
+				rules : {
+					'g.name' : {
+						required : true
+					}
+				}
+			};
+			function buttonClick(button){
+				formSubmit($(button), setting, function(data){
+					if(data.status == false){
+						alert(data.msg);
+					}else{
+						go(1, pageUrl);
+					}
+				});
+			};
 		</script>
 	</head>
 	<body>
@@ -30,7 +49,7 @@
 				<div class="tab-pane active tab-group">
 					<div class="row">
 						<div class="col-sm-3 col-cont">
-							<form id="form-group" class="form-horizontal" action="${ctx }/anime/save/group" method="post">
+							<form class="form-horizontal" action="${ctx }/anime/save/group" method="post">
 								<input type="hidden" name="g.id" />
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="g_name">name</label>
@@ -44,27 +63,35 @@
 										<input type="text" class="form-control" id="g_pinyinPref" name="g.pinyinPref" value="${g.pinyinPref }" />
 									</div>
 								</div>
-								<button type="button" class="btn btn-default" onclick="formSave(this)">save</button>
+								<button type="button" class="btn btn-default" onclick="buttonClick(this)">save</button>
 							</form>
 						</div>
 						<div class="col-sm-9 col-cont">
-							<table id="table-group" class="table">
+							<table class="table">
 								<tr>
 									<td>id</td>
 									<td>name</td>
 									<td>pinyinPref</td>
 								</tr>
+								<c:forEach items="${page.result }" var="item">
+									<tr>
+										<td>${item.id }</td>
+										<td>${item.name }</td>
+										<td>${item.pinyinPref }</td>
+									</tr>
+								</c:forEach>
+								<c:if test="${fn:length(page.result) != page.pageSize}">
+									<c:forEach var="x" begin="0" end="${page.pageSize - fn:length(page.result) - 1}">
+										<tr style="height: 37px;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+									</c:forEach>
+								</c:if>
 							</table>
+							<nav aria-label="...">
+								<ul class="pagination">
+									${page.pagination }
+								</ul>
+							</nav>
 						</div>
-					</div>
-					<div class="row">
-						<nav aria-label="...">
-							<ul id="pager-group" class="pager">
-								<li><a href="#">Previous</a></li>
-								<li><a href="#">1</a></li>
-								<li><a href="#">Next</a></li>
-							</ul>
-						</nav>
 					</div>
 				</div>
 			</div>

@@ -10,31 +10,73 @@ import java.util.List;
  */
 public class Page<T> {
 
+	private int displayLength = 6;
 	private int pageNo = 1;
 	private int pageSize = 15;
 	private int totalCount = 0;
 	private List<T> result = new ArrayList<T>();
-	private String pager = "";
+	private String pagination = "";
 	
 	public Page(){
 		
 	}
 	
 	public Page(int pageNo, int pageSize){
-		this.pageNo = pageNo;
-		this.pageSize = pageSize;
+		if(pageNo != 0){
+			this.pageNo = pageNo;
+		}
+		if(pageSize != 0){
+			this.pageSize = pageSize;
+		}
 	}
 	
 	public Page(int pageNo){
-		this.pageNo = pageNo;
+		if(pageNo != 0){
+			this.pageNo = pageNo;
+		}
 	}
 	
 	public void generatePager(){
 		String html = "";
-		html += "<li><a href='#' onclick='go(0)'>Previous</a></li>";
-		html += "<li><a href='#' onclick='go(1)'>1</a></li>";
-		html += "<li><a href='#' onclick='go(2)'>Next</a></li>";
-		this.pager = html;
+		if(totalCount == 0){
+			html += "<li><a href='#' onclick='go(1)'>Previous</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>1</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>Next</a></li>";
+		}else{
+			int pageCount = totalCount%pageSize==0?totalCount/pageSize:totalCount/pageSize+1;
+			int top = 1;
+			int bottom = pageCount;
+			int pre = pageNo-1>0?pageNo-1:1;
+			int next = pageNo+1>pageCount?pageCount:pageNo+1;
+			int start = 0;
+			int end = 0;
+			if(pageCount > displayLength){
+				if(pageNo - displayLength/2 < 1){
+					start = 1;
+					end = start + displayLength - 1;
+				}else if(pageNo + displayLength/2 > pageCount){
+					end = pageCount;
+					start = end - displayLength + 1;
+				}else{
+					start = pageNo - displayLength/2;
+					end = pageNo + displayLength/2;
+					if(displayLength%2==0){
+						start++;
+					}
+				}
+			}else{
+				start = 1;
+				end = pageCount;
+			}
+			html += "<li><a href='#' onclick='go("+top+")'>&lt;&lt;</a></li>";
+			html += "<li><a href='#' onclick='go("+pre+")'>&lt;</a></li>";
+			for(int i=start;i<end+1;i++){
+				html += "<li class="+(pageNo==i?"active":"")+"><a href='#' onclick='go("+i+")'>"+i+"</a></li>";
+			}
+			html += "<li><a href='#' onclick='go("+next+")'>&gt;</a></li>";
+			html += "<li><a href='#' onclick='go("+bottom+")'>&gt;&gt;</a></li>";
+		}
+		this.pagination = html;
 	}
 	
 	public int getPageNo() {
@@ -61,8 +103,9 @@ public class Page<T> {
 	public void setResult(List<T> result) {
 		this.result = result;
 	}
-	public String getPager() {
-		return pager;
+	public String getPagination() {
+		this.generatePager();
+		return pagination;
 	}
 	
 }
