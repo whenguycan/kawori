@@ -4,6 +4,9 @@ import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
+import com.whenguycan.kawori.common.Season;
+import com.whenguycan.kawori.common.Status;
+
 /**
  * 
  * @author whenguycan
@@ -18,28 +21,20 @@ public class Anime{
 	
 	@Column("f_name")
 	private String name;
-	@Column("f_group")
-	private String group;
 	@Column("f_curr")
 	private Integer curr;
 	@Column("f_all")
 	private Integer all;
 	@Column("f_season")
-	private String season;
+	private Season season;
 	@Column("f_status")
-	private String status;
+	private Status status;
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getGroup() {
-		return group;
-	}
-	public void setGroup(String group) {
-		this.group = group;
 	}
 	public Integer getCurr() {
 		return curr;
@@ -53,16 +48,16 @@ public class Anime{
 	public void setAll(Integer all) {
 		this.all = all;
 	}
-	public String getSeason() {
+	public Season getSeason() {
 		return season;
 	}
-	public void setSeason(String season) {
+	public void setSeason(Season season) {
 		this.season = season;
 	}
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	public Long getId() {

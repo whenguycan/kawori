@@ -12,7 +12,7 @@
 		</style>
 		<script type="text/javascript">
 			var ctx = "${ctx}";
-			var pageUrl = ctx + "/anime/anime";
+			var pageUrl = ctx + "/anime/index";
 			$(function(){
 				$('tr').on('click', function(){
 					
@@ -35,6 +35,8 @@
 				var $form = $(button).parent();
 				$form.find('input').val('');
 				$form.find('select').val('');
+				$form.find('input').parent().parent().removeClass('has-error');
+				$form.find('select').parent().parent().removeClass('has-error');
 			};
 			function edit(a, formId){
 				var $tds = $(a).parent().siblings();
@@ -48,7 +50,7 @@
 			function del(a){
 				if(window.confirm("确定删除？")){
 					var $tds = $(a).parent().siblings();
-					var url = ctx + "/anime/anime/del/" + $($tds[0]).html();
+					var url = ctx + "/anime/del/" + $($tds[0]).html();
 					window.location.href = url;
 				}
 			}
@@ -57,7 +59,16 @@
 					'a.name' : {
 						required : true
 					},
-					'a.group' : {
+					'a.curr' : {
+						required : true
+					},
+					'a.all' : {
+						required : true
+					},
+					'a.season' : {
+						required : true
+					},
+					'a.status' : {
 						required : true
 					}
 				}
@@ -85,7 +96,7 @@
 				<div class="tab-pane active">
 					<div class="row">
 						<div class="col-sm-3 col-cont">
-							<form class="form-horizontal" id="editForm" action="${ctx }/anime/save/anime" method="post">
+							<form class="form-horizontal" id="editForm" action="${ctx }/anime/save" method="post">
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_id">id</label>
 									<div class="col-sm-8">
@@ -96,12 +107,6 @@
 									<label class="col-sm-3 control-label" for="editForm_name">name</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" id="editForm_name" name="a.name" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_group">group</label>
-									<div class="col-sm-8">
-										<select class="form-control groupSelect" id="editForm_group" name="a.group">${selectGroup }</select>
 									</div>
 								</div>
 								<div class="form-group">
@@ -119,13 +124,17 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_season">season</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_season" name="a.season" />
+										<select class="form-control" id="editForm_season" name="a.season">
+											${selectSeason }
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_status">status</label>
 									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_status" name="a.status" />
+										<select class="form-control" id="editForm_status" name="a.status">
+											${selectStatusSave }
+										</select>
 									</div>
 								</div>
 								<button type="button" class="btn btn-default" onclick="buttonClick(this)">save</button>
@@ -140,10 +149,9 @@
 											<input type="text" class="form-control" name="s.LIKE_name" placeholder="name" value="${s.LIKE_name }"/>
 										</div>
 										<div class="form-group">
-											<select class="form-control groupSelect" name="s.EQ_group" value="${s.EQ_group }">${selectGroup }</select>
-										</div>
-										<div class="form-group">
-											<select class="form-control" name="s.EQ_status" value="${s.EQ_status }">${selectStatus }</select>
+											<select class="form-control" name="s.EQ_status" value="${s.EQ_status }">
+												${selectStatusSearch }
+											</select>
 										</div>
         								<button type="button" class="btn btn-default" onclick="go(1)">Search</button>
         								<button type="button" class="btn btn-default" onclick="resetSearchForm(this)">Reset</button>
@@ -154,7 +162,6 @@
 								<tr>
 									<td>id</td>
 									<td>name</td>
-									<td>group</td>
 									<td>curr</td>
 									<td>all</td>
 									<td>season</td>
@@ -165,7 +172,6 @@
 									<tr>
 										<td for="id">${item.id }</td>
 										<td for="name">${item.name }</td>
-										<td for="group">${item.group }</td>
 										<td for="curr">${item.curr }</td>
 										<td for="all">${item.all }</td>
 										<td for="season">${item.season }</td>
