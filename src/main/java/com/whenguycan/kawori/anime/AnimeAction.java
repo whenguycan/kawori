@@ -39,6 +39,11 @@ public class AnimeAction extends BaseAction{
 		clear();
 		insert();
 	}
+	@At("/clear")
+	@Ok("redirect:/anime/index")
+	public void clear(HttpServletRequest req){
+		clear();
+	}
 	private void insert(){
 		for(int i=0;i<22;i++){
 			Anime a = new Anime();
