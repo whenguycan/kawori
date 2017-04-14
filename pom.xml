@@ -4,6 +4,7 @@
 	<groupId>com.whenguycan</groupId>
 	<artifactId>kawori</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 
 	<properties>
 		<nutz.v>1.r.60</nutz.v>
@@ -45,7 +46,6 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>${pinyin4j.v}</version>
 		</dependency>
-
 	</dependencies>
 
 </project>
