@@ -64,7 +64,7 @@
 										<input type="password" class="form-control" id="loginForm_password" name="u.password" />
 									</div>
 								</div>
-								<button type="submit" class="btn btn-default">login</button>
+								<button type="submit" class="btn btn-default">Login</button>
 								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
 							</form>
 						</div>

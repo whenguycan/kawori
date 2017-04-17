@@ -4,9 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.View;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
+import org.nutz.mvc.view.ServerRedirectView;
 
 import com.whenguycan.kawori.common.BaseAction;
 import com.whenguycan.kawori.common.IBaseService;
@@ -38,6 +43,13 @@ public class AnimeAction extends BaseAction{
 		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "--choose status--"));
 		req.setAttribute("selectStatusSave", Select.gen(Status.values(), s!=null?s.getEQ_status():null, null));
 		req.setAttribute("selectSeason", Select.gen(Season.values(), "", null));
+	}
+	
+	@At("/upload")
+	@AdaptBy(type = UploadAdaptor.class, args = { "/uploadTmp", "8192", "UTF-8", "10" })  
+	public View upload(@Param("file")TempFile file, HttpServletRequest req){
+		System.out.println(file.getName());
+		return new ServerRedirectView("/anime/index");
 	}
 	
 	@At("/save")

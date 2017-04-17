@@ -4,7 +4,7 @@ var ioc = {
 		fields : {
 			driverClass : "com.mysql.jdbc.Driver",
 			jdbcUrl : "jdbc:mysql://127.0.0.1:3306/anime?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
-			user : "root",
+			user : "wang",
 			password : "123456",
 			initialPoolSize : 5,
 			minPoolSize : 10, 

@@ -137,7 +137,18 @@
 										</select>
 									</div>
 								</div>
-								<button type="button" class="btn btn-default" onclick="buttonClick(this)">save</button>
+								<button type="button" class="btn btn-default" onclick="buttonClick(this)">Save</button>
+								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
+							</form>
+							<div class="col-cont"></div>
+							<form class="form-horizontal" id="uploadForm" action="${ctx }/anime/upload" method="post" enctype="multipart/form-data">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="editForm_file">file</label>
+									<div class="col-sm-8">
+										<input type="file" class="file" id="editForm_file" name="file" />
+									</div>
+								</div>
+								<button type="button" class="btn btn-default" onclick="buttonClick(this)">Upload</button>
 								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
 							</form>
 						</div>
