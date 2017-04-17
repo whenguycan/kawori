@@ -1,10 +1,7 @@
 package com.whenguycan.kawori.anime;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -30,34 +27,6 @@ public class AnimeAction extends BaseAction{
 	
 	@Inject
 	IBaseService baseService;
-	@Inject
-	Dao dao;
-	
-	@At("/init")
-	@Ok("redirect:/anime/index")
-	public void init(HttpServletRequest req){
-		clear();
-		insert();
-	}
-	@At("/clear")
-	@Ok("redirect:/anime/index")
-	public void clear(HttpServletRequest req){
-		clear();
-	}
-	private void insert(){
-		for(int i=0;i<22;i++){
-			Anime a = new Anime();
-			a.setName(UUID.randomUUID().toString().replace("-", ""));
-			a.setCurr(1);
-			a.setAll(23);
-			a.setSeason(Season.I);
-			a.setStatus(Status.ING);
-			dao.fastInsert(a);
-		}
-	}
-	private void clear(){
-		dao.clear(Anime.class);
-	}
 	
 	@At(value = {"/index/?", "/index"})
 	@Ok("jsp:/WEB-INF/page/anime.jsp")

@@ -29,6 +29,7 @@ public class BaseService implements IBaseService{
 		return dao.query(clazz, null);
 	}
 	
+	@Override
 	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd, Map<String, Object> params){
 		if(page == null){
 			page = new Page<T>();

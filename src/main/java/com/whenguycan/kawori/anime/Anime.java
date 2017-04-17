@@ -30,6 +30,7 @@ public class Anime{
 	@Column("f_status")
 	private Status status;
 	
+	
 	public String getName() {
 		return name;
 	}
