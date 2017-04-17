@@ -145,10 +145,10 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_file">file</label>
 									<div class="col-sm-8">
-										<input type="file" class="file" id="editForm_file" name="file" />
+										<input type="file" class="file" id="editForm_file" name="uploadFile" />
 									</div>
 								</div>
-								<button type="button" class="btn btn-default" onclick="buttonClick(this)">Upload</button>
+								<button type="submit" class="btn btn-default">Upload</button>
 								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
 							</form>
 						</div>
