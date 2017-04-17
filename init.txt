@@ -10,6 +10,10 @@ f_season varchar(255),
 f_status varchar(255)
 );
 
-delete from t_e_anime;
-
-select * from t_e_anime;
+drop table t_e_user;
+create table t_e_user(
+id int(11) primary key auto_increment,
+f_username varchar(255),
+f_password varchar(255),
+f_realname varchar(255)
+);
