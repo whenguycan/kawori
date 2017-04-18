@@ -99,8 +99,12 @@ public class AnimeAction extends BaseAction{
 	public Object download(HttpServletRequest req){
 		String uploadAbsolutePath = Mvcs.getActionContext().getServletContext().getRealPath("/upload");
 		String uploadFilePath = uploadAbsolutePath + File.separator + "anime.txt";
+		File folder = new File(uploadAbsolutePath);
 		File file = new File(uploadFilePath);
 		try {
+			if(!folder.exists()){
+				folder.mkdir();
+			}
 			if(!file.exists()){
 				file.createNewFile();
 			}
