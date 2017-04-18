@@ -67,6 +67,10 @@ public class AnimeAction extends BaseAction{
 //			String uploadFilePath = uploadAbsolutePath + File.separator + file.getSubmittedFileName();
 			String uploadFilePath = uploadAbsolutePath + File.separator + System.currentTimeMillis();
 			try {
+				File folder = new File(uploadAbsolutePath);
+				if(!folder.exists()){
+					folder.mkdirs();
+				}
 				file.write(uploadFilePath);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 				String line = "";
