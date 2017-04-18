@@ -101,6 +101,9 @@ public class AnimeAction extends BaseAction{
 		String uploadFilePath = uploadAbsolutePath + File.separator + "anime.txt";
 		File file = new File(uploadFilePath);
 		try {
+			if(!file.exists()){
+				file.createNewFile();
+			}
 			OutputStream os = new FileOutputStream(file);
 			StringBuilder sb = new StringBuilder();
 			List<Anime> list = baseService.findList(Anime.class, null, null);
