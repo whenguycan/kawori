@@ -15,11 +15,11 @@ public enum Season {
 	
 	OAD1,OAD2,OAD3,OAD4,OAD5;
 	
-	public static Season forName(String sn){
-		Season[] sa = Season.values();
-		for(Season s : sa){
-			if(s.name().equalsIgnoreCase(sn)){
-				return s;
+	public static Season forName(String name){
+		Season[] arr = Season.values();
+		for(Season i : arr){
+			if(i.name().equalsIgnoreCase(name)){
+				return i;
 			}
 		}
 		return null;

@@ -118,6 +118,14 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-3 control-label" for="editForm_group">group</label>
+									<div class="col-sm-8">
+										<select class="form-control" id="editForm_group" name="a.group" disabled="disabled">
+											${selectGroup }
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_curr">curr</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" id="editForm_curr" name="a.curr" />
@@ -141,7 +149,7 @@
 									<label class="col-sm-3 control-label" for="editForm_status">status</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="editForm_status" name="a.status">
-											${selectStatusSave }
+											${selectStatus }
 										</select>
 									</div>
 								</div>
@@ -175,6 +183,11 @@
 												${selectStatusSearch }
 											</select>
 										</div>
+										<div class="form-group">
+											<select class="form-control" name="s.EQ_group" value="${s.EQ_group }">
+												${selectGroupSearch }
+											</select>
+										</div>
         								<button type="button" class="btn btn-default" onclick="go(1)">Search</button>
         								<button type="button" class="btn btn-default" onclick="resetSearchForm(this)">Reset</button>
 									</form>
@@ -188,6 +201,7 @@
 									<td>all</td>
 									<td>season</td>
 									<td>status</td>
+									<td>group</td>
 									<td>creator</td>
 									<td>operation</td>
 								</tr>
@@ -199,6 +213,7 @@
 										<td for="all">${item.all }</td>
 										<td for="season">${item.season }</td>
 										<td for="status">${item.status }</td>
+										<td for="group">${item.group }</td>
 										<td for="creator">${item.creator }</td>
 										<td>
 											<a href="#" onclick="edit(this,'editForm')">修改</a>
@@ -208,7 +223,7 @@
 								</c:forEach>
 								<c:if test="${fn:length(page.result) != page.pageSize}">
 									<c:forEach var="x" begin="0" end="${page.pageSize - fn:length(page.result) - 1}">
-										<tr style="height: 37px;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr style="height: 37px;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 									</c:forEach>
 								</c:if>
 							</table>

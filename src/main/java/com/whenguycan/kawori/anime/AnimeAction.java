@@ -23,6 +23,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 import org.nutz.mvc.view.ServerRedirectView;
 
 import com.whenguycan.kawori.common.BaseAction;
+import com.whenguycan.kawori.common.Group;
 import com.whenguycan.kawori.common.IBaseService;
 import com.whenguycan.kawori.common.Page;
 import com.whenguycan.kawori.common.Search;
@@ -50,9 +51,12 @@ public class AnimeAction extends BaseAction{
 		Page<Anime> page = new Page<Anime>(pageNo);
 		page = baseService.findPage(Anime.class, page, Cnd.where("f_creator", "=", super.getLoginUser().getId()), getParmas(s));
 		req.setAttribute("page", page);
-		req.setAttribute("s", s);
+		req.setAttribute("s", s); 
 		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "-- status --"));
-		req.setAttribute("selectStatusSave", Select.gen(Status.values(), s!=null?s.getEQ_status():null, null));
+		req.setAttribute("selectGroupSearch", Select.gen(Group.values(), s!=null?s.getEQ_group():null, "-- group --"));
+		
+		req.setAttribute("selectGroup", Select.gen(Group.values(), "", null));
+		req.setAttribute("selectStatus", Select.gen(Status.values(), "", null));
 		req.setAttribute("selectSeason", Select.gen(Season.values(), "", null));
 	}
 	
@@ -76,7 +80,7 @@ public class AnimeAction extends BaseAction{
 					}else{
 						stored.setCurr(anime.getCurr());
 						stored.setAll(anime.getAll());
-						baseService.update(stored);
+						animeService.update(stored);
 					}
 				}
 			} catch (Exception e) {
@@ -100,9 +104,9 @@ public class AnimeAction extends BaseAction{
 				sb.append("NO RECORD");
 			}else{
 				for(Anime anime : list){
-					sb.append(anime.getName()).append("-");
-					sb.append(anime.getSeason().name()).append("-");
-					sb.append(anime.getCurr()).append("-");
+					sb.append(anime.getName()).append("---");
+					sb.append(anime.getSeason().name()).append("---");
+					sb.append(anime.getCurr()).append("---"); 
 					sb.append(anime.getAll());
 					sb.append("\r\n");
 				}
@@ -127,7 +131,7 @@ public class AnimeAction extends BaseAction{
 			if(anime.getId() == null){
 				anime = baseService.insert(anime);
 			}else{
-				baseService.update(anime);
+				animeService.update(anime);
 			}
 			return getSuccessJson(anime.getId(), "");
 		}

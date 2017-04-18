@@ -9,8 +9,7 @@ public class Search {
 
 	private String LIKE_name;
 	private String EQ_status;
-	private String groupSelect;
-	private String statusSelect;
+	private String EQ_group;
 	
 	public String getLIKE_name() {
 		return LIKE_name;
@@ -24,17 +23,11 @@ public class Search {
 	public void setEQ_status(String iS_status) {
 		EQ_status = iS_status;
 	}
-	public String getGroupSelect() {
-		return groupSelect;
+	public String getEQ_group() {
+		return EQ_group;
 	}
-	public void setGroupSelect(String groupSelect) {
-		this.groupSelect = groupSelect;
-	}
-	public String getStatusSelect() {
-		return statusSelect;
-	}
-	public void setStatusSelect(String statusSelect) {
-		this.statusSelect = statusSelect;
+	public void setEQ_group(String eQ_group) {
+		EQ_group = eQ_group;
 	}
 	
 }
