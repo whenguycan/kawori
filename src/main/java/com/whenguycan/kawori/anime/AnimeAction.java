@@ -69,7 +69,7 @@ public class AnimeAction extends BaseAction{
 			try {
 				File folder = new File(uploadAbsolutePath);
 				if(!folder.exists()){
-					folder.mkdirs();
+					folder.mkdir();
 				}
 				file.write(uploadFilePath);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
