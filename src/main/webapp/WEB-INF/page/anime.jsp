@@ -151,6 +151,9 @@
 								<button type="submit" class="btn btn-default">Upload</button>
 								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
 							</form>
+							<div class="col-cont">
+								<a class="btn btn-default" href="${ctx }/anime/download">Download</a>
+							</div>
 						</div>
 						<div class="col-sm-9 col-cont">
 							<nav class="navbar navbar-default">

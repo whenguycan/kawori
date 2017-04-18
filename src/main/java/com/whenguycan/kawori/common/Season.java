@@ -15,4 +15,13 @@ public enum Season {
 	
 	OAD1,OAD2,OAD3;
 	
+	public static Season forName(String sn){
+		Season[] sa = Season.values();
+		for(Season s : sa){
+			if(s.name().equals(sn)){
+				return s;
+			}
+		}
+		return null;
+	}
 }

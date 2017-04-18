@@ -2,7 +2,10 @@ package com.whenguycan.kawori.anime;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,24 +54,59 @@ public class AnimeAction extends BaseAction{
 	}
 	
 	@At("/upload")
-	@AdaptBy(type = UploadAdaptor.class, args = { "/uploadTmp", "8192", "UTF-8", "10" })  
+	@AdaptBy(type = UploadAdaptor.class, args = { "~/uploadTmp", "8192", "UTF-8", "10" })  
 	public View upload(@Param("uploadFile")TempFile file, HttpServletRequest req){
 		if(file != null){
 			String uploadAbsolutePath = Mvcs.getActionContext().getServletContext().getRealPath("/upload");
-//			String uploadFileName = uploadAbsolutePath + File.separator + file.getSubmittedFileName();
-			String uploadFileName = uploadAbsolutePath + File.separator + System.currentTimeMillis();
+//			String uploadFilePath = uploadAbsolutePath + File.separator + file.getSubmittedFileName();
+			String uploadFilePath = uploadAbsolutePath + File.separator + System.currentTimeMillis();
 			try {
-				file.write(uploadFileName);
+				file.write(uploadFilePath);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 				String line = "";
 				while((line = reader.readLine()) != null){
-					System.out.println(line);
+					Anime anime = new Anime(line.split("-+"));
+					if(baseService.checkFieldNotRepeat(Anime.class, null, "f_name", anime.getName())){
+						baseService.insert(anime);
+					}else{
+						System.out.println("name repeat : "+anime.getName());
+					}
 				}
 			} catch (Exception e) {
 				
 			}
 		}
 		return new ServerRedirectView("/anime/index");
+	}
+	
+	@At("/download")
+	@Ok("raw:stream")
+	public Object download(HttpServletRequest req){
+		String uploadAbsolutePath = Mvcs.getActionContext().getServletContext().getRealPath("/upload");
+		String uploadFilePath = uploadAbsolutePath + File.separator + "anime.txt";
+		File file = new File(uploadFilePath);
+		try {
+			OutputStream os = new FileOutputStream(file);
+			StringBuilder sb = new StringBuilder();
+			List<Anime> list = baseService.findList(Anime.class, null);
+			if(list == null || list.size() == 0){
+				sb.append("NO RECORD");
+			}else{
+				for(Anime anime : list){
+					sb.append(anime.getName()).append("-");
+					sb.append(anime.getSeason().name()).append("-");
+					sb.append(anime.getCurr()).append("-");
+					sb.append(anime.getAll());
+					sb.append("\r\n");
+				}
+			}
+			os.write(sb.toString().getBytes());
+			os.flush();
+			os.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file;
 	}
 	
 	@At("/save")

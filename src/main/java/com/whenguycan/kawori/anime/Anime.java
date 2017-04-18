@@ -30,6 +30,32 @@ public class Anime{
 	@Column("f_status")
 	private Status status;
 	
+	public Anime(){
+		
+	}
+	
+	public Anime(String... fields){
+		if(fields.length > 0){
+			this.name = fields[0];
+		}
+		if(fields.length > 1){
+			this.season = Season.forName(fields[1]);
+		}
+		try {
+			if(fields.length > 1){
+				this.curr = Integer.parseInt(fields[2]);
+			}
+		} catch (Exception e) {
+		}
+		try {
+			if(fields.length > 2){
+				this.all = Integer.parseInt(fields[3]);
+			}
+		} catch (Exception e) {
+			
+		}
+		status = curr!=0&&curr==all?Status.END:Status.ING;
+	}
 	
 	public String getName() {
 		return name;
