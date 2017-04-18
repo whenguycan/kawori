@@ -54,7 +54,6 @@ public class AnimeAction extends BaseAction{
 		req.setAttribute("s", s); 
 		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "-- status --"));
 		req.setAttribute("selectGroupSearch", Select.gen(Group.values(), s!=null?s.getEQ_group():null, "-- group --"));
-		
 		req.setAttribute("selectGroup", Select.gen(Group.values(), "", null));
 		req.setAttribute("selectStatus", Select.gen(Status.values(), "", null));
 		req.setAttribute("selectSeason", Select.gen(Season.values(), "", null));
@@ -103,11 +102,26 @@ public class AnimeAction extends BaseAction{
 			if(list == null || list.size() == 0){
 				sb.append("NO RECORD");
 			}else{
-				for(Anime anime : list){
-					sb.append(anime.getName()).append("---");
-					sb.append(anime.getSeason().name()).append("---");
-					sb.append(anime.getCurr()).append("---"); 
-					sb.append(anime.getAll());
+				sb.append("==========anime==========\r\n");
+				sb.append("=========================\r\n");
+				sb.append("\r\n");
+				for(int i=65;i<=90;i++){
+					String x = new String(new char[]{(char)i});
+					sb.append("============"+x+"============\r\n");
+					Group g = Group.forName(x);
+					for(Anime anime : list){
+						if(g.name().equals(anime.getGroup().name())){
+							sb.append(anime.getName());
+							sb.append("(");
+							sb.append(anime.getAll());
+							sb.append("/");
+							sb.append(anime.getSeason());
+							sb.append(")");
+							sb.append("--------");
+							sb.append(anime.getCurr()); 
+							sb.append("\r\n");
+						}
+					}
 					sb.append("\r\n");
 				}
 			}
