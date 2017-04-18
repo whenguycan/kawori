@@ -73,7 +73,7 @@ public class AnimeAction extends BaseAction{
 					}
 				}
 			} catch (Exception e) {
-				
+				e.printStackTrace();
 			}
 		}
 		return new ServerRedirectView("/anime/index");
