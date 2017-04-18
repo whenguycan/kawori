@@ -18,3 +18,5 @@ f_username varchar(255),
 f_password varchar(255),
 f_realname varchar(255)
 );
+
+insert into t_e_user values (null,'wang','57931574aeb159cc7552d1fe45f1dcdc2480b9e','');
