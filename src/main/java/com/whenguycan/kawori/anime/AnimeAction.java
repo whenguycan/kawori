@@ -68,6 +68,7 @@ public class AnimeAction extends BaseAction{
 			String uploadFilePath = uploadAbsolutePath + File.separator + System.currentTimeMillis();
 			try {
 				File folder = new File(uploadAbsolutePath);
+				System.out.println(folder.exists());
 				if(!folder.exists()){
 					folder.mkdir();
 				}
