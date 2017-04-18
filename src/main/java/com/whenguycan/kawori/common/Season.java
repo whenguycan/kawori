@@ -9,16 +9,16 @@ public enum Season {
 	
 	I,II,III,IV,V,VI,VII,VIII,IX,X,
 	
-	SP1,SP2,SP3,
+	SP1,SP2,SP3,SP4,SP5,
 	
-	OVA1,OVA2,OVA3,
+	OVA1,OVA2,OVA3,OVA4,OVA5,
 	
-	OAD1,OAD2,OAD3;
+	OAD1,OAD2,OAD3,OAD4,OAD5;
 	
 	public static Season forName(String sn){
 		Season[] sa = Season.values();
 		for(Season s : sa){
-			if(s.name().equals(sn)){
+			if(s.name().equalsIgnoreCase(sn)){
 				return s;
 			}
 		}
