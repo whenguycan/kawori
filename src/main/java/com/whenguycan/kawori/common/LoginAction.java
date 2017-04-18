@@ -30,17 +30,17 @@ public class LoginAction extends BaseAction{
 		String username = req.getParameter("u.username");
 		String password = req.getParameter("u.password");
 		if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)){
-			List<User> uList = baseService.findList(User.class, Cnd.where("f_username", "=", username));
+			List<User> uList = baseService.findList(User.class, Cnd.where("f_username", "=", username), null);
 			if(uList != null && uList.size() != 0){
 				User user = uList.get(0);
 				if(Encrypt.md5PasswordCheck(password, user.getPassword())){
 					String accessToken = LoginManager.login(user);
-					req.getSession().setAttribute(LoginManager.token, accessToken);
+					req.getSession().setAttribute(LoginManager.TOKEN, accessToken);
 					return new ServerRedirectView("/anime/index");
 				}
 			}
 		}else{
-			String accessToken = (String)req.getSession().getAttribute(LoginManager.token);
+			String accessToken = (String)req.getSession().getAttribute(LoginManager.TOKEN);
 			if(StringUtils.isNotBlank(accessToken)){
 				Token token = LoginManager.getToken(accessToken);
 				if(token != null){
@@ -53,7 +53,7 @@ public class LoginAction extends BaseAction{
 	
 	@At("/logout")
 	public View logout(HttpServletRequest req){
-		String accessToken = (String)req.getSession().getAttribute(LoginManager.token);
+		String accessToken = (String)req.getSession().getAttribute(LoginManager.TOKEN);
 		if(StringUtils.isNotBlank(accessToken)){
 			LoginManager.logOut(accessToken.toString());
 		}

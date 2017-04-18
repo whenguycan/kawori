@@ -12,7 +12,7 @@ import org.nutz.dao.Cnd;
  */
 public interface IBaseService {
 
-	public <T> List<T> findList(Class<T> clazz, Cnd cnd);
+	public <T> List<T> findList(Class<T> clazz, Cnd cnd, Map<String, Object> params);
 	
 	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd, Map<String, Object> params);
 	
@@ -22,6 +22,10 @@ public interface IBaseService {
 	
 	public <T> int delete(Class<T> clazz, Long id);
 	
+	/**
+	 * 查询单个字段是否重复（新增、修改）
+	 * @return
+	 */
 	public <T> boolean checkFieldNotRepeat(Class<T> clazz, Long id, String fieldName, String fieldValue);
 	
 }

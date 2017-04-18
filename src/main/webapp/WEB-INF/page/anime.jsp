@@ -60,10 +60,12 @@
 						required : true
 					},
 					'a.curr' : {
-						required : true
+						required : true,
+						number : true
 					},
 					'a.all' : {
-						required : true
+						required : true,
+						number : true
 					},
 					'a.season' : {
 						required : true
@@ -101,6 +103,12 @@
 									<label class="col-sm-3 control-label" for="editForm_id">id</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" id="editForm_id" name="a.id" readonly="readonly"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="editForm_creator">creator</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" id="editForm_creator" name="a.creator" readonly="readonly"/>
 									</div>
 								</div>
 								<div class="form-group">
@@ -180,6 +188,7 @@
 									<td>all</td>
 									<td>season</td>
 									<td>status</td>
+									<td>creator</td>
 									<td>operation</td>
 								</tr>
 								<c:forEach items="${page.result }" var="item">
@@ -190,6 +199,7 @@
 										<td for="all">${item.all }</td>
 										<td for="season">${item.season }</td>
 										<td for="status">${item.status }</td>
+										<td for="creator">${item.creator }</td>
 										<td>
 											<a href="#" onclick="edit(this,'editForm')">修改</a>
 											<a href="#" onclick="del(this)">删除</a>

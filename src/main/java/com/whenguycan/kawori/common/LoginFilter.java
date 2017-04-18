@@ -18,7 +18,7 @@ public class LoginFilter implements ActionFilter{
 		if("/login".equals(path) || "/logout".equals(path)){
 			return null;
 		}
-		String accessToken = (String)actionContext.getRequest().getSession().getAttribute(LoginManager.token);
+		String accessToken = (String)actionContext.getRequest().getSession().getAttribute(LoginManager.TOKEN);
 		if(StringUtils.isNotBlank(accessToken)){
 			Token token = LoginManager.getToken(accessToken);
 			if(token != null){

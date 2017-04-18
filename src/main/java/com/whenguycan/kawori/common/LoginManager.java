@@ -14,31 +14,31 @@ import com.whenguycan.kawori.anime.User;
 public class LoginManager {
 	
 	private static final long tokenTimeOut = 10 * 60 * 1000L;
-	public static final String token = "accessToken";
+	public static final String TOKEN = "accessToken";
 
 	private static Map<String, Token> tokens = new HashMap<String, Token>();
 	
 	public static String login(User user){
 		synchronized (tokens) {
-			String token = UUID.randomUUID().toString().replace("-", "");
-			Token t = new Token(user);
-			tokens.put(token, t);
-			return token;
+			String accessToken = UUID.randomUUID().toString().replace("-", "");
+			Token token = new Token(user);
+			tokens.put(accessToken, token);
+			return accessToken;
 		}
 	}
 	
-	public static void logOut(String token){
+	public static void logOut(String accessToken){
 		synchronized (tokens) {
-			tokens.remove(token);
+			tokens.remove(accessToken);
 		}
 	}
 	
-	public static Token getToken(String token){
+	public static Token getToken(String accessToken){
 		synchronized (tokens) {
-			if(tokens.containsKey(token)){
-				Token t = tokens.get(token);
+			if(tokens.containsKey(accessToken)){
+				Token t = tokens.get(accessToken);
 				if(System.currentTimeMillis() > t.getLoginTime() + tokenTimeOut){
-					tokens.remove(token);
+					tokens.remove(accessToken);
 					return null;
 				}else{
 					t.setLoginTime(System.currentTimeMillis());

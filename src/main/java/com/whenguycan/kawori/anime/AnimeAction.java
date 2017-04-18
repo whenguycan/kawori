@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.Mvcs;
@@ -40,15 +41,17 @@ public class AnimeAction extends BaseAction{
 	
 	@Inject
 	IBaseService baseService;
+	@Inject
+	AnimeService animeService;
 	
 	@At(value = {"/index/?", "/index"})
 	@Ok("jsp:/WEB-INF/page/anime.jsp")
 	public void anime(int pageNo, @Param("::s.")Search s, HttpServletRequest req){
 		Page<Anime> page = new Page<Anime>(pageNo);
-		page = baseService.findPage(Anime.class, page, null, getParmas(s));
+		page = baseService.findPage(Anime.class, page, Cnd.where("f_creator", "=", super.getLoginUser().getId()), getParmas(s));
 		req.setAttribute("page", page);
 		req.setAttribute("s", s);
-		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "--choose status--"));
+		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "-- status --"));
 		req.setAttribute("selectStatusSave", Select.gen(Status.values(), s!=null?s.getEQ_status():null, null));
 		req.setAttribute("selectSeason", Select.gen(Season.values(), "", null));
 	}
@@ -66,10 +69,14 @@ public class AnimeAction extends BaseAction{
 				String line = "";
 				while((line = reader.readLine()) != null){
 					Anime anime = new Anime(line.split("-+"));
-					if(baseService.checkFieldNotRepeat(Anime.class, null, "f_name", anime.getName())){
+					anime.setCreator(super.getLoginUser().getId());
+					Anime stored = animeService.getStoredAnime(anime);
+					if(stored == null){
 						baseService.insert(anime);
 					}else{
-						System.out.println("name repeat : "+anime.getName());
+						stored.setCurr(anime.getCurr());
+						stored.setAll(anime.getAll());
+						baseService.update(stored);
 					}
 				}
 			} catch (Exception e) {
@@ -88,7 +95,7 @@ public class AnimeAction extends BaseAction{
 		try {
 			OutputStream os = new FileOutputStream(file);
 			StringBuilder sb = new StringBuilder();
-			List<Anime> list = baseService.findList(Anime.class, null);
+			List<Anime> list = baseService.findList(Anime.class, null, null);
 			if(list == null || list.size() == 0){
 				sb.append("NO RECORD");
 			}else{
@@ -113,8 +120,9 @@ public class AnimeAction extends BaseAction{
 	@Ok("json")
 	public Object saveAnime(HttpServletRequest req, @Param("::a.")Anime anime){
 		if(anime != null){
-			if(!baseService.checkFieldNotRepeat(Anime.class, anime.getId(), "f_name", anime.getName())){
-				return getFiledJson("", "name repeat");
+			anime.setCreator(super.getLoginUser().getId());
+			if(!animeService.checkSaveUsable(anime)){
+				return getFiledJson("", "anime repeat");
 			}
 			if(anime.getId() == null){
 				anime = baseService.insert(anime);

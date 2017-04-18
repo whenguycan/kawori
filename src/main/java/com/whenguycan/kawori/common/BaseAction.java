@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.nutz.json.Json;
+import org.nutz.mvc.Mvcs;
+
+import com.whenguycan.kawori.anime.User;
 
 /**
  * 
@@ -49,5 +52,11 @@ public class BaseAction {
 			}
 		}
 		return map;
+	}
+	
+	public User getLoginUser(){
+		String accessToken = (String)Mvcs.getHttpSession().getAttribute(LoginManager.TOKEN);
+		Token token = LoginManager.getToken(accessToken);
+		return token!=null?token.getLoginUser():new User();
 	}
 }

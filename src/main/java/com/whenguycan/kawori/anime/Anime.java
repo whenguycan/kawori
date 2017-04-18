@@ -29,6 +29,8 @@ public class Anime{
 	private Season season;
 	@Column("f_status")
 	private Status status;
+	@Column("f_creator")
+	private Long creator;
 	
 	public Anime(){
 		
@@ -54,7 +56,11 @@ public class Anime{
 		} catch (Exception e) {
 			
 		}
-		status = curr!=0&&curr==all?Status.END:Status.ING;
+		calStatus();
+	}
+	
+	private void calStatus(){
+		this.status = this.curr!=null&&this.curr!=0&&this.curr==all?Status.END:Status.ING;
 	}
 	
 	public String getName() {
@@ -68,12 +74,14 @@ public class Anime{
 	}
 	public void setCurr(Integer curr) {
 		this.curr = curr;
+		calStatus();
 	}
 	public Integer getAll() {
 		return all;
 	}
 	public void setAll(Integer all) {
 		this.all = all;
+		calStatus();
 	}
 	public Season getSeason() {
 		return season;
@@ -92,6 +100,12 @@ public class Anime{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Long getCreator() {
+		return creator;
+	}
+	public void setCreator(Long creator) {
+		this.creator = creator;
 	}
 	
 }

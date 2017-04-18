@@ -25,8 +25,16 @@ public class BaseService implements IBaseService{
 	}
 
 	@Override
-	public <T> List<T> findList(Class<T> clazz, Cnd cnd) {
-		return dao.query(clazz, null);
+	public <T> List<T> findList(Class<T> clazz, Cnd cnd, Map<String, Object> params) {
+		if(params != null && params.size() != 0){
+			cnd = cnd==null?Cnd.NEW():cnd;
+			for(Entry<String, Object> e : params.entrySet()){
+				if(e.getValue() != null && !e.getValue().toString().isEmpty()){
+					cnd.and(explain(e));
+				}
+			}
+		}
+		return dao.query(clazz, cnd);
 	}
 	
 	@Override
@@ -35,7 +43,7 @@ public class BaseService implements IBaseService{
 			page = new Page<T>();
 		}
 		Pager pager = dao.createPager(page.getPageNo(), page.getPageSize());
-		if(params.size() != 0){
+		if(params != null && params.size() != 0){
 			cnd = cnd==null?Cnd.NEW():cnd;
 			for(Entry<String, Object> e : params.entrySet()){
 				if(e.getValue() != null && !e.getValue().toString().isEmpty()){
@@ -82,4 +90,5 @@ public class BaseService implements IBaseService{
 		int c = dao.count(clazz, cnd);
 		return c==0?true:false;
 	}
+	
 }
