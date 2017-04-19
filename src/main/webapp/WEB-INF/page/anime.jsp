@@ -9,6 +9,7 @@
 		<title>Insert title here</title>
 		<style type="text/css">
 			.col-cont{padding-top: 10px;}
+			.panel{margin-bottom: 10px;}
 		</style>
 		<script type="text/javascript">
 			var ctx = "${ctx}";
@@ -18,6 +19,11 @@
 					
 				});
 			});
+			function itemClear(){
+				if(window.confirm("确定清空所有数据？")){
+					window.location.href = ctx + "/anime/clear";
+				}
+			};
 			function go(pageNo){
 				pageGo(pageNo, pageUrl);
 			};
@@ -60,17 +66,12 @@
 						required : true
 					},
 					'a.curr' : {
-						required : true,
 						number : true
 					},
 					'a.all' : {
-						required : true,
 						number : true
 					},
 					'a.season' : {
-						required : true
-					},
-					'a.status' : {
 						required : true
 					}
 				}
@@ -98,83 +99,98 @@
 				<div class="tab-pane active">
 					<div class="row">
 						<div class="col-sm-3 col-cont">
-							<form class="form-horizontal" id="editForm" action="${ctx }/anime/save" method="post">
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_id">id</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_id" name="a.id" readonly="readonly"/>
-									</div>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<form class="form-horizontal" id="editForm" action="${ctx }/anime/save" method="post">
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_id">id</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="editForm_id" name="a.id" readonly="readonly"/>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_creator">creator</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="editForm_creator" name="a.creator" readonly="readonly"/>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_name">name</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="editForm_name" name="a.name" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_group">group</label>
+											<div class="col-sm-8">
+												<select class="form-control" id="editForm_group" name="a.group">
+													<c:forEach items="${selectGroup }" var="item">
+														<option value="${item.code }">${item.text }</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_curr">curr</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="editForm_curr" name="a.curr" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_all">all</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" id="editForm_all" name="a.all" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_season">season</label>
+											<div class="col-sm-8">
+												<select class="form-control" id="editForm_season" name="a.season">
+													<c:forEach items="${selectSeason }" var="item">
+														<option value="${item.code }">${item.text }</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_status">status</label>
+											<div class="col-sm-8">
+												<select class="form-control" id="editForm_status" name="a.status">
+													<c:forEach items="${selectStatus }" var="item">
+														<option value="${item.code }">${item.text }</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+										<button type="button" class="btn btn-default" onclick="buttonClick(this)">Save</button>
+										<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
+									</form>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_creator">creator</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_creator" name="a.creator" readonly="readonly"/>
-									</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<form class="form-horizontal" id="uploadForm" action="${ctx }/anime/upload" method="post" enctype="multipart/form-data">
+										<div class="form-group">
+											<label class="col-sm-3 control-label" for="editForm_file">file</label>
+											<div class="col-sm-8">
+												<input type="file" class="file" id="editForm_file" name="uploadFile" />
+											</div>
+										</div>
+										<button type="submit" class="btn btn-default">Upload</button>
+										<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
+									</form>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_name">name</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_name" name="a.name" />
-									</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<a class="btn btn-default" href="${ctx }/anime/download">Download</a>
+									<a class="btn btn-default" href="${ctx }/anime/rebuild">Rebuild</a>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_group">group</label>
-									<div class="col-sm-8">
-										<select class="form-control" id="editForm_group" name="a.group">
-											<c:forEach items="${selectGroup }" var="item">
-												<option value="${item.code }">${item.text }</option>
-											</c:forEach>
-										</select>
-									</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<a class="btn btn-default" href="javascript:itemClear()">Clear</a>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_curr">curr</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_curr" name="a.curr" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_all">all</label>
-									<div class="col-sm-8">
-										<input type="text" class="form-control" id="editForm_all" name="a.all" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_season">season</label>
-									<div class="col-sm-8">
-										<select class="form-control" id="editForm_season" name="a.season">
-											<c:forEach items="${selectSeason }" var="item">
-												<option value="${item.code }">${item.text }</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_status">status</label>
-									<div class="col-sm-8">
-										<select class="form-control" id="editForm_status" name="a.status">
-											<c:forEach items="${selectStatus }" var="item">
-												<option value="${item.code }">${item.text }</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-								<button type="button" class="btn btn-default" onclick="buttonClick(this)">Save</button>
-								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
-							</form>
-							<div class="col-cont"></div>
-							<form class="form-horizontal" id="uploadForm" action="${ctx }/anime/upload" method="post" enctype="multipart/form-data">
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="editForm_file">file</label>
-									<div class="col-sm-8">
-										<input type="file" class="file" id="editForm_file" name="uploadFile" />
-									</div>
-								</div>
-								<button type="submit" class="btn btn-default">Upload</button>
-								<button type="button" class="btn btn-default" onclick="resetSaveForm(this)">Reset</button>
-							</form>
-							<div class="col-cont">
-								<a class="btn btn-default" href="${ctx }/anime/download">Download</a>
 							</div>
 						</div>
 						<div class="col-sm-9 col-cont">

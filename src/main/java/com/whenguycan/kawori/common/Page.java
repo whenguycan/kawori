@@ -16,6 +16,38 @@ public class Page<T> {
 	private int totalCount = 0;
 	private List<T> result = new ArrayList<T>();
 	private String pagination = "";
+	private Order order;
+	
+	class Order{
+		private String order;
+		private String field;
+		public String order(){
+			return this.order;
+		}
+		public String field(){
+			return this.field;
+		}
+	}
+	
+	public Page<T> asc(String orderField){
+		if(StringUtils.isNotBlank(orderField)){
+			Order o = new Order();
+			o.order = "ASC";
+			o.field = orderField;
+			this.order = o;
+		}
+		return this;
+	}
+	
+	public Page<T> desc(String order, String orderField){
+		if(StringUtils.isNotBlank(orderField)){
+			Order o = new Order();
+			o.order = "DESC";
+			o.field = orderField;
+			this.order = o;
+		}
+		return this;
+	}
 	
 	public Page(){
 		
@@ -106,6 +138,9 @@ public class Page<T> {
 	public String getPagination() {
 		this.generatePager();
 		return pagination;
+	}
+	public Order getOrder() {
+		return order;
 	}
 	
 }

@@ -18,12 +18,12 @@ public class MainSetup implements Setup {
 		ServletContext sc = config.getServletContext();
 		sc.setAttribute("ctx", sc.getContextPath());
 
-		sc.setAttribute("selectStatusSearch", Select.gen(Status.values(), true));
-		sc.setAttribute("selectGroupSearch", Select.gen(Group.values(), true));
-		sc.setAttribute("selectSeasonSearch", Select.gen(Season.values(), true));
-		sc.setAttribute("selectStatus", Select.gen(Status.values(), false));
-		sc.setAttribute("selectGroup", Select.gen(Group.values(), false));
-		sc.setAttribute("selectSeason", Select.gen(Season.values(), false));
+		sc.setAttribute("selectStatusSearch", Select.gen(Status.values(), "-- status --"));
+		sc.setAttribute("selectGroupSearch", Select.gen(Group.values(), "-- group --"));
+		sc.setAttribute("selectSeasonSearch", Select.gen(Season.values(), "-- season --"));
+		sc.setAttribute("selectStatus", Select.gen(Status.values(), null));
+		sc.setAttribute("selectGroup", Select.gen(Group.values(), null));
+		sc.setAttribute("selectSeason", Select.gen(Season.values(), null));
 		
 	}
 

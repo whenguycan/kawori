@@ -11,4 +11,8 @@ public class StringUtils {
 		return s==null?false:s.equals("")?false:true;
 	}
 	
+	public static boolean isBlank(String s){
+		return !isNotBlank(s);
+	}
+	
 }

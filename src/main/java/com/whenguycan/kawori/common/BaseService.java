@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.util.cri.SqlExpression;
@@ -51,7 +52,8 @@ public class BaseService implements IBaseService{
 				}
 			}
 		}
-		List<T> list = dao.query(clazz, cnd, pager);
+		Condition cdn = page.getOrder()==null?cnd:cnd.orderBy(page.getOrder().field(), page.getOrder().order());
+		List<T> list = dao.query(clazz, cdn, pager);
 		int count = dao.count(clazz, cnd);
 		page.setTotalCount(count);
 		page.setResult(list);
@@ -89,6 +91,11 @@ public class BaseService implements IBaseService{
 		}
 		int c = dao.count(clazz, cnd);
 		return c==0?true:false;
+	}
+
+	@Override
+	public <T> void clear(Class<T> clazz, Cnd cnd) {
+		dao.clear(clazz, cnd);
 	}
 	
 }

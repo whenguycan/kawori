@@ -40,12 +40,8 @@ public class AnimeService extends BaseService{
 			return null;
 		}
 		Cnd cnd = Cnd.where("f_name", "=", anime.getName());
-		if(anime.getSeason() != null){
-			cnd = cnd.and("f_season", "=", anime.getSeason().name());
-		}
-		if(anime.getCreator() != null){
-			cnd = cnd.and("f_creator", "=", anime.getCreator());
-		}
+		cnd = cnd.and("f_season", "=", anime.getSeason()!=null?anime.getSeason().name():null);
+		cnd = cnd.and("f_creator", "=", anime.getCreator()!=null?anime.getCreator():null);
 		if(anime.getId() != null){
 			cnd = cnd.and("ID", "<>", anime.getId());
 		}

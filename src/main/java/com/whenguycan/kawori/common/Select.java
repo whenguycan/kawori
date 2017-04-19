@@ -18,10 +18,10 @@ public class Select {
 		this.text = text;
 	}
 
-	public static <E extends Enum<E>> List<Select> gen(E[] arr, boolean hasAllDefault){
+	public static <E extends Enum<E>> List<Select> gen(E[] arr, String defaultValue){
 		List<Select> list = new ArrayList<Select>();
-		if(hasAllDefault){
-			list.add(new Select("", "ALL"));
+		if(StringUtils.isNotBlank(defaultValue)){
+			list.add(new Select("", defaultValue));
 		}
 		for(E e : arr){
 			list.add(new Select(e.name(), e.name()));

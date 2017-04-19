@@ -7,6 +7,7 @@ import org.nutz.dao.entity.annotation.Table;
 import com.whenguycan.kawori.common.Group;
 import com.whenguycan.kawori.common.Season;
 import com.whenguycan.kawori.common.Status;
+import com.whenguycan.kawori.common.StringUtils;
 
 /**
  * 
@@ -39,34 +40,49 @@ public class Anime{
 		
 	}
 	
-	public Anime(String... fields){
-		if(fields.length > 0){
-			this.name = fields[0];
+	public static Anime create(String line){
+		if(!StringUtils.isNotBlank(line)){
+			return null;
 		}
-		if(fields.length > 1){
-			this.season = Season.forName(fields[1]);
+		char pre = line.charAt(0);
+		if(pre != '-'){
+			return null;
 		}
-		try {
-			if(fields.length > 1){
-				this.curr = Integer.parseInt(fields[2]);
+		String[] info = line.split("-+");
+		if(info == null || info.length < 2){
+			return null;
+		}
+		Anime anime = new Anime();
+		anime.setName(info[1]);
+		if(info.length > 2){
+			anime.setSeason(Season.forName(info[2]));
+		}
+		if(info.length > 3){
+			try {
+				int curr = Integer.parseInt(info[3]);
+				anime.setCurr(curr);
+			} catch (Exception e) {
+				System.out.println("error curr : "+info[3]);
 			}
-		} catch (Exception e) {
 		}
-		try {
-			if(fields.length > 2){
-				this.all = Integer.parseInt(fields[3]);
+		if(info.length > 4){
+			try {
+				int all = Integer.parseInt(info[4]);
+				anime.setAll(all);
+			} catch (Exception e) {
+				System.out.println("error all : "+info[4]);
 			}
-		} catch (Exception e) {
-			
 		}
+		return anime;
 	}
 	
-	public void generateGroup(){
+	public Group generateGroup(){
 		this.group = Group.generateGroup(this.name);
+		return this.group;
 	}
 	
 	public void generateStatus(){
-		this.status = this.curr!=null&&this.curr.intValue()==this.all.intValue()?Status.END:Status.ING;
+		this.status = this.curr!=null&&this.all!=null&&this.curr.intValue()==this.all.intValue()?Status.END:Status.ING;
 	}
 	
 	public String getName() {

@@ -24,7 +24,7 @@ function myValidate($form, $setting){
 					}
 				}
 				if(r.number == true){
-					var reg = /^[0-9]+$/;
+					var reg = /^[0-9]*$/;
 					if(!v.match(reg)){
 						$form.find('input[name="'+n+'"]').parent().parent().addClass('has-error');
 						errc++;

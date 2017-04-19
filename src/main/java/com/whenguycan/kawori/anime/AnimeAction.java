@@ -44,7 +44,7 @@ public class AnimeAction extends BaseAction{
 	@At(value = {"/index/?", "/index"})
 	@Ok("jsp:/WEB-INF/page/anime.jsp")
 	public void anime(int pageNo, HttpServletRequest req){
-		Page<Anime> page = new Page<Anime>(pageNo);
+		Page<Anime> page = new Page<Anime>(pageNo).asc("f_group");
 		page = baseService.findPage(Anime.class, page, Cnd.where("f_creator", "=", getLoginUser().getId()), getParmaMap(req));
 		req.setAttribute("page", page);
 	}
@@ -61,16 +61,18 @@ public class AnimeAction extends BaseAction{
 				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 				String line = "";
 				while((line = reader.readLine()) != null){
-					Anime anime = new Anime(line.split("-+"));
-					anime.setCreator(getLoginUser().getId());
-					anime.generateGroup();
-					anime.generateStatus();
-					Anime stored = animeService.getStoredAnime(anime);
-					if(stored == null){
-						baseService.insert(anime);
-					}else{
-						anime.setId(stored.getId());
-						baseService.update(anime);
+					Anime anime = Anime.create(line);
+					if(anime != null){
+						anime.setCreator(getLoginUser().getId());
+						anime.generateGroup();
+						anime.generateStatus();
+						Anime stored = animeService.getStoredAnime(anime);
+						if(stored == null){
+							baseService.insert(anime);
+						}else{
+							anime.setId(stored.getId());
+							baseService.update(anime);
+						}
 					}
 				}
 			} catch (Exception e) {
@@ -155,4 +157,23 @@ public class AnimeAction extends BaseAction{
 	public void del(Long id, HttpServletRequest req){
 		baseService.delete(Anime.class, id);
 	}
+	
+	@At("/rebuild")
+	@Ok("redirect:/anime/index")
+	public void rebuild(){
+		List<Anime> list = baseService.findList(Anime.class, null, null);
+		for(Anime anime : list){
+			Group origin = anime.getGroup();
+			if(anime.generateGroup() != origin){
+				baseService.update(anime);
+			}
+		}
+	}
+	
+	@At("/clear")
+	@Ok("redirect:/anime/index")
+	public void clear(){
+		baseService.clear(Anime.class, null);
+	}
+	
 }

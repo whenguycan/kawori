@@ -28,4 +28,6 @@ public interface IBaseService {
 	 */
 	public <T> boolean checkFieldNotRepeat(Class<T> clazz, Long id, String fieldName, String fieldValue);
 	
+	public <T> void clear(Class<T> clazz, Cnd cnd);
+	
 }
