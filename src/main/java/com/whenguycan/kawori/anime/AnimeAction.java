@@ -26,10 +26,6 @@ import com.whenguycan.kawori.common.BaseAction;
 import com.whenguycan.kawori.common.Group;
 import com.whenguycan.kawori.common.IBaseService;
 import com.whenguycan.kawori.common.Page;
-import com.whenguycan.kawori.common.Search;
-import com.whenguycan.kawori.common.Season;
-import com.whenguycan.kawori.common.Select;
-import com.whenguycan.kawori.common.Status;
 
 /**
  * 
@@ -47,16 +43,10 @@ public class AnimeAction extends BaseAction{
 	
 	@At(value = {"/index/?", "/index"})
 	@Ok("jsp:/WEB-INF/page/anime.jsp")
-	public void anime(int pageNo, @Param("::s.")Search s, HttpServletRequest req){
+	public void anime(int pageNo, HttpServletRequest req){
 		Page<Anime> page = new Page<Anime>(pageNo);
-		page = baseService.findPage(Anime.class, page, Cnd.where("f_creator", "=", super.getLoginUser().getId()), getParmas(s));
+		page = baseService.findPage(Anime.class, page, Cnd.where("f_creator", "=", getLoginUser().getId()), getParmaMap(req));
 		req.setAttribute("page", page);
-		req.setAttribute("s", s); 
-		req.setAttribute("selectStatusSearch", Select.gen(Status.values(), s!=null?s.getEQ_status():null, "-- status --"));
-		req.setAttribute("selectGroupSearch", Select.gen(Group.values(), s!=null?s.getEQ_group():null, "-- group --"));
-		req.setAttribute("selectGroup", Select.gen(Group.values(), "", null));
-		req.setAttribute("selectStatus", Select.gen(Status.values(), "", null));
-		req.setAttribute("selectSeason", Select.gen(Season.values(), "", null));
 	}
 	
 	@At("/upload")
@@ -67,24 +57,20 @@ public class AnimeAction extends BaseAction{
 //			String uploadFilePath = uploadAbsolutePath + File.separator + file.getSubmittedFileName();
 			String uploadFilePath = uploadAbsolutePath + File.separator + System.currentTimeMillis();
 			try {
-				File folder = new File(uploadAbsolutePath);
-				System.out.println(folder.exists());
-				if(!folder.exists()){
-					folder.mkdir();
-				}
 				file.write(uploadFilePath);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 				String line = "";
 				while((line = reader.readLine()) != null){
 					Anime anime = new Anime(line.split("-+"));
-					anime.setCreator(super.getLoginUser().getId());
+					anime.setCreator(getLoginUser().getId());
+					anime.generateGroup();
+					anime.generateStatus();
 					Anime stored = animeService.getStoredAnime(anime);
 					if(stored == null){
 						baseService.insert(anime);
 					}else{
-						stored.setCurr(anime.getCurr());
-						stored.setAll(anime.getAll());
-						animeService.update(stored);
+						anime.setId(stored.getId());
+						baseService.update(anime);
 					}
 				}
 			} catch (Exception e) {
@@ -150,14 +136,14 @@ public class AnimeAction extends BaseAction{
 	@Ok("json")
 	public Object saveAnime(HttpServletRequest req, @Param("::a.")Anime anime){
 		if(anime != null){
-			anime.setCreator(super.getLoginUser().getId());
+			anime.setCreator(getLoginUser().getId());
 			if(!animeService.checkSaveUsable(anime)){
 				return getFiledJson("", "anime repeat");
 			}
 			if(anime.getId() == null){
 				anime = baseService.insert(anime);
 			}else{
-				animeService.update(anime);
+				baseService.update(anime);
 			}
 			return getSuccessJson(anime.getId(), "");
 		}

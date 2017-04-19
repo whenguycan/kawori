@@ -5,7 +5,7 @@ package com.whenguycan.kawori.common;
  * @author whenguycan
  * @date 2017年4月12日 下午4:40:26
  */
-public enum Season {
+public enum Season{
 	
 	I,II,III,IV,V,VI,VII,VIII,IX,X,
 	

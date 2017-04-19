@@ -120,8 +120,10 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="editForm_group">group</label>
 									<div class="col-sm-8">
-										<select class="form-control" id="editForm_group" name="a.group" disabled="disabled">
-											${selectGroup }
+										<select class="form-control" id="editForm_group" name="a.group">
+											<c:forEach items="${selectGroup }" var="item">
+												<option value="${item.code }">${item.text }</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -141,7 +143,9 @@
 									<label class="col-sm-3 control-label" for="editForm_season">season</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="editForm_season" name="a.season">
-											${selectSeason }
+											<c:forEach items="${selectSeason }" var="item">
+												<option value="${item.code }">${item.text }</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -149,7 +153,9 @@
 									<label class="col-sm-3 control-label" for="editForm_status">status</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="editForm_status" name="a.status">
-											${selectStatus }
+											<c:forEach items="${selectStatus }" var="item">
+												<option value="${item.code }">${item.text }</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -176,16 +182,20 @@
 								<div class="collapse navbar-collapse">
 									<form class="navbar-form navbar-left" id="searchForm" action="" method="post">
 										<div class="form-group">
-											<input type="text" class="form-control" name="s.LIKE_name" placeholder="name" value="${s.LIKE_name }"/>
+											<input type="text" class="form-control" name="S_I_LIKE_name" placeholder="按名称查询" value="${S_I_LIKE_name }"/>
 										</div>
 										<div class="form-group">
-											<select class="form-control" name="s.EQ_status" value="${s.EQ_status }">
-												${selectStatusSearch }
+											<select class="form-control" name="S_S_EQ_status" value="${S_S_EQ_status }">
+												<c:forEach items="${selectStatusSearch }" var="item">
+													<option value="${item.code }" <c:if test="${item.code == S_S_EQ_status }">selected="selected"</c:if>>${item.text }</option>
+												</c:forEach>
 											</select>
 										</div>
 										<div class="form-group">
-											<select class="form-control" name="s.EQ_group" value="${s.EQ_group }">
-												${selectGroupSearch }
+											<select class="form-control" name="S_S_EQ_group" value="${S_S_EQ_group }">
+												<c:forEach items="${selectGroupSearch }" var="item">
+													<option value="${item.code }" <c:if test="${item.code == S_S_EQ_group }">selected="selected"</c:if>>${item.text }</option>
+												</c:forEach>
 											</select>
 										</div>
         								<button type="button" class="btn btn-default" onclick="go(1)">Search</button>

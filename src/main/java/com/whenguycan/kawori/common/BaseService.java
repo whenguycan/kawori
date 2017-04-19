@@ -59,8 +59,8 @@ public class BaseService implements IBaseService{
 	}
 	private SqlExpression explain(Entry<String, Object> entry){
 		String[] x = entry.getKey().split("_");
-		String name = x[1];
-		String op = x[0].equals("EQ")?"=":x[0];
+		String name = x[x.length-1];
+		String op = x[x.length-2].equals("EQ")?"=":x[x.length-2];
 		Object value = op.equals("LIKE")?"%"+entry.getValue()+"%":entry.getValue();
 		return Cnd.exp(name, op, value);
 	}

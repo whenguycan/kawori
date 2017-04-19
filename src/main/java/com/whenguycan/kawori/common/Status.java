@@ -7,6 +7,16 @@ package com.whenguycan.kawori.common;
  */
 public enum Status {
 
-	ING,END;
+	ING, END;
+	
+	public static Status forName(String name){
+		Status[] arr = Status.values();
+		for(Status i : arr){
+			if(i.name().equalsIgnoreCase(name)){
+				return i;
+			}
+		}
+		return null;
+	}
 	
 }

@@ -1,16 +1,12 @@
 package com.whenguycan.kawori.anime;
 
 import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.EL;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Prev;
 import org.nutz.dao.entity.annotation.Table;
 
 import com.whenguycan.kawori.common.Group;
 import com.whenguycan.kawori.common.Season;
 import com.whenguycan.kawori.common.Status;
-
-import net.sourceforge.pinyin4j.PinyinHelper;
 
 /**
  * 
@@ -26,7 +22,6 @@ public class Anime{
 	
 	@Column("f_name")
 	private String name;
-	@Prev(els = {@EL("$me.generateGroup()")})
 	@Column("f_group")
 	private Group group;
 	@Column("f_curr")
@@ -35,7 +30,6 @@ public class Anime{
 	private Integer all;
 	@Column("f_season")
 	private Season season;
-	@Prev(els = {@EL("$me.generateStatus()")})
 	@Column("f_status")
 	private Status status;
 	@Column("f_creator")
@@ -67,25 +61,12 @@ public class Anime{
 		}
 	}
 	
-	public Status generateStatus(){
-		return this.curr!=null&&this.curr!=0&&this.curr==all?Status.END:Status.ING;
+	public void generateGroup(){
+		this.group = Group.generateGroup(this.name);
 	}
 	
-	public Group generateGroup(){
-		if(this.name == null){
-			return null;
-		}
-		char c = this.name.charAt(0);
-		char[] ca = {c};
-		String head = new String(ca);
-		System.out.println(head);
-		System.out.println(head.matches("[\u4e00-\u9fa5]"));
-		if(head.matches("[\u4e00-\u9fa5]")){
-			String[] arr = PinyinHelper.toHanyuPinyinStringArray(c);
-			return Group.forName(arr[0].substring(0, 1));
-		}else{
-			return Group.forName(head);
-		}
+	public void generateStatus(){
+		this.status = this.curr!=null&&this.curr.intValue()==this.all.intValue()?Status.END:Status.ING;
 	}
 	
 	public String getName() {

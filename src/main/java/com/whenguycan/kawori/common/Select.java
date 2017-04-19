@@ -1,75 +1,39 @@
 package com.whenguycan.kawori.common;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 
  * @author whenguycan
- * @date 2017年4月12日 下午4:22:05
+ * @date 2017年4月19日 上午11:09:39
  */
 public class Select {
-
-	private String html;
 	
-	private Select(String html){
-		this.html = html;
-	}
+	private String code;
+	private String text;
 	
-	@Override
-	public String toString(){
-		return this.html;
-	}
-	
-	public static <T extends Enum<T>> Select gen(T[] values, String selectValue, String emptyName){
-		String html = "";
-		if(emptyName != null && !"".equals(emptyName)){
-			html += "<option value='' >"+emptyName+"</option>";
-		}
-		for(T v : values){
-			String id = v.name();
-			Object name = v.name();
-			if(selectValue != null && id.equals(selectValue)){
-				html += "<option value='"+id+"' selected='selected'>"+name+"</option>";
-			}else{
-				html += "<option value='"+id+"'>"+name+"</option>";
-			}
-		}
-		return new Select(html);
-	}
-	
-	public static <E> Select gen(Class<E> clazz, List<E> list, String idField, String nameField, String selectValue, String emptyName){
-		String html = "";
-		if(emptyName != null && !"".equals(emptyName)){
-			html += "<option value='' >"+emptyName+"</option>";
-		}
-		try {
-			Field idf = clazz.getDeclaredField(idField);
-			Field nmf = clazz.getDeclaredField(nameField);
-			idf.setAccessible(true);
-			nmf.setAccessible(true);
-			for(E e : list){
-				String id = idf.get(e).toString();
-				Object name = nmf.get(e);
-				if(selectValue != null && id.equals(selectValue)){
-					html += "<option value='"+id+"' selected='selected'>"+name+"</option>";
-				}else{
-					html += "<option value='"+id+"'>"+name+"</option>";
-				}
-			}
-			idf.setAccessible(false);
-			nmf.setAccessible(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new Select(html);
+	public Select(String code, String text){
+		this.code = code;
+		this.text = text;
 	}
 
-	public String getHtml() {
-		return html;
+	public static <E extends Enum<E>> List<Select> gen(E[] arr, boolean hasAllDefault){
+		List<Select> list = new ArrayList<Select>();
+		if(hasAllDefault){
+			list.add(new Select("", "ALL"));
+		}
+		for(E e : arr){
+			list.add(new Select(e.name(), e.name()));
+		}
+		return list;
 	}
-	public void setHtml(String html) {
-		this.html = html;
+	
+	public String getCode(){
+		return this.code;
+	}
+	public String getText(){
+		return this.text;
 	}
 	
 }

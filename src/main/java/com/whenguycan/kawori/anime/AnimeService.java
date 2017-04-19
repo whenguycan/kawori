@@ -53,10 +53,4 @@ public class AnimeService extends BaseService{
 		return list!=null&&list.size()!=0?list.get(0):null;
 	}
 	
-	@Override
-	public <T> int update(T t) {
-		Anime anime = (Anime)t;
-		anime.setGroup(anime.generateGroup());
-		return super.update(anime);
-	}
 }
