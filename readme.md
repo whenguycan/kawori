@@ -1,5 +1,7 @@
 
-version 0.0.3
+version 0.0.4
 
-0.0.4
-增加对season的兼容性，移除所有枚举，统一采用select并使用ioc读入
+移除实体中的枚举属性，统一使用string
+枚举统一实现IEnum接口，包含code,text2个方法
+供下拉框和数据库使用
+下拉框使用注解枚举并使用Scans加载
