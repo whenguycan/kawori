@@ -30,6 +30,11 @@
 					window.location.href = ctx + "/anime/clear";
 				}
 			};
+			function rebuild(){
+				if(window.confirm("确定重建所有group吗？")){
+					window.location.href = ctx + "/anime/rebuild";
+				}
+			};
 			function go(pageNo){
 				pageGo(pageNo, pageUrl);
 			};
@@ -93,7 +98,7 @@
 	<body>
 		<div style="height:10px;"></div>
 		<div class="container">
-			<div class="col-sm-12">
+			<div class="col-md-12">
 				<ul class="nav nav-tabs" id="tabs">
 					<li class="active"><a class="tab-anime" href="#anime" data-toggle="tab">anime</a></li>
 				</ul>
@@ -101,7 +106,7 @@
 			<div class="tab-content">
 				<div class="tab-pane active">
 					<div class="row">
-						<div class="col-sm-3 col-cont">
+						<div class="col-md-3 col-cont">
 							<div class="panel panel-default">
 								<div class="panel-body">
 									<form class="form-horizontal" id="editForm" action="${ctx }/anime/save" method="post">
@@ -186,12 +191,13 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-body">
-									<a class="btn btn-default" href="${ctx }/anime/download">Download</a>
-									<a class="btn btn-default" href="${ctx }/anime/rebuild">Rebuild</a>
+									<a class="btn btn-default" href="${ctx }/anime/download/ing">Down ING</a>
+									<a class="btn btn-default" href="${ctx }/anime/download/end">Down END</a>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-body">
+									<a class="btn btn-default" href="javascript:rebuild()">Rebuild</a>
 									<a class="btn btn-default" href="javascript:itemClear()">Clear</a>
 									<!-- 
 										<a class="btn btn-default" href="javascript:test()">Test</a>
@@ -199,7 +205,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-9 col-cont">
+						<div class="col-md-9 col-cont">
 							<nav class="navbar navbar-default">
 								<div class="collapse navbar-collapse">
 									<form class="navbar-form navbar-left" id="searchForm" action="" method="post">
@@ -227,15 +233,15 @@
 							</nav>
 							<table class="table">
 								<tr>
-									<td>id</td>
-									<td>name</td>
-									<td>curr</td>
-									<td>all</td>
-									<td>season</td>
-									<td>status</td>
-									<td>group</td>
-									<td>creator</td>
-									<td>operation</td>
+									<td width="6%">id</td>
+									<td width="22%">name</td>
+									<td width="5%">curr</td>
+									<td width="5%">all</td>
+									<td width="5%">season</td>
+									<td width="5%">status</td>
+									<td width="5%">group</td>
+									<td width="5%">creator</td>
+									<td width="12%">operation</td>
 								</tr>
 								<c:forEach items="${page.result }" var="item">
 									<tr>

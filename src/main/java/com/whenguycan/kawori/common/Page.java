@@ -12,7 +12,7 @@ import com.whenguycan.kawori.common.utils.StringUtils;
  */
 public class Page<T> {
 
-	private int displayLength = 6;
+	private int displayLength = 10;
 	private int pageNo = 1;
 	private int pageSize = 15;
 	private int totalCount = 0;
@@ -72,12 +72,14 @@ public class Page<T> {
 		}
 	}
 
-	public void generatePager() {
+	public void generatePagination() {
 		String html = "";
 		if (totalCount == 0) {
-			html += "<li><a href='#' onclick='go(1)'>Previous</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>&lt;&lt;</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>&lt;</a></li>";
 			html += "<li><a href='#' onclick='go(1)'>1</a></li>";
-			html += "<li><a href='#' onclick='go(1)'>Next</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>&lt;</a></li>";
+			html += "<li><a href='#' onclick='go(1)'>&gt;&gt;</a></li>";
 		} else {
 			int pageCount = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
 			int top = 1;
@@ -149,7 +151,7 @@ public class Page<T> {
 	}
 
 	public String getPagination() {
-		this.generatePager();
+		this.generatePagination();
 		return pagination;
 	}
 
