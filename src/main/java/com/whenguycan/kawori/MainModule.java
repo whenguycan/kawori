@@ -14,11 +14,8 @@ import com.whenguycan.kawori.common.LoginFilter;
 @Ok("json")
 @Fail("json")
 @Modules(scanPackage = true)
-@Filters(value = {@By(type = LoginFilter.class)})
-@IocBy(type = ComboIocProvider.class, args = {
-	"*json", "ioc/",
-	"*anno", "com.whenguycan.kawori"
-})
+@Filters(value = { @By(type = LoginFilter.class) })
+@IocBy(type = ComboIocProvider.class, args = { "*json", "ioc/", "*anno", "com.whenguycan.kawori" })
 @SetupBy(value = MainSetup.class)
 public class MainModule {
 

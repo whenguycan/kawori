@@ -19,6 +19,12 @@
 					
 				});
 			});
+			function test(){
+				var url = ctx + "/anime/test";
+				$.post(url, {}, function(data){
+					console.debug(JSON.stringify(data));
+				});
+			};
 			function itemClear(){
 				if(window.confirm("确定清空所有数据？")){
 					window.location.href = ctx + "/anime/clear";
@@ -70,9 +76,6 @@
 					},
 					'a.all' : {
 						number : true
-					},
-					'a.season' : {
-						required : true
 					}
 				}
 			};
@@ -124,8 +127,8 @@
 											<label class="col-sm-3 control-label" for="editForm_group">group</label>
 											<div class="col-sm-8">
 												<select class="form-control" id="editForm_group" name="a.group">
-													<c:forEach items="${selectGroup }" var="item">
-														<option value="${item.code }">${item.text }</option>
+													<c:forEach items="${Enums['group'] }" var="item">
+														<option value="${item.key }">${item.value }</option>
 													</c:forEach>
 												</select>
 											</div>
@@ -146,8 +149,8 @@
 											<label class="col-sm-3 control-label" for="editForm_season">season</label>
 											<div class="col-sm-8">
 												<select class="form-control" id="editForm_season" name="a.season">
-													<c:forEach items="${selectSeason }" var="item">
-														<option value="${item.code }">${item.text }</option>
+													<c:forEach items="${Enums['season'] }" var="item">
+														<option value="${item.key }">${item.value }</option>
 													</c:forEach>
 												</select>
 											</div>
@@ -156,8 +159,8 @@
 											<label class="col-sm-3 control-label" for="editForm_status">status</label>
 											<div class="col-sm-8">
 												<select class="form-control" id="editForm_status" name="a.status">
-													<c:forEach items="${selectStatus }" var="item">
-														<option value="${item.code }">${item.text }</option>
+													<c:forEach items="${Enums['status'] }" var="item">
+														<option value="${item.key }">${item.value }</option>
 													</c:forEach>
 												</select>
 											</div>
@@ -190,6 +193,9 @@
 							<div class="panel panel-default">
 								<div class="panel-body">
 									<a class="btn btn-default" href="javascript:itemClear()">Clear</a>
+									<!-- 
+										<a class="btn btn-default" href="javascript:test()">Test</a>
+									 -->
 								</div>
 							</div>
 						</div>
@@ -202,15 +208,15 @@
 										</div>
 										<div class="form-group">
 											<select class="form-control" name="S_S_EQ_status" value="${S_S_EQ_status }">
-												<c:forEach items="${selectStatusSearch }" var="item">
-													<option value="${item.code }" <c:if test="${item.code == S_S_EQ_status }">selected="selected"</c:if>>${item.text }</option>
+												<c:forEach items="${Enums['status'] }" var="item">
+													<option value="${item.key }" <c:if test="${item.key == S_S_EQ_status }">selected="selected"</c:if>>${item.value }</option>
 												</c:forEach>
 											</select>
 										</div>
 										<div class="form-group">
 											<select class="form-control" name="S_S_EQ_group" value="${S_S_EQ_group }">
-												<c:forEach items="${selectGroupSearch }" var="item">
-													<option value="${item.code }" <c:if test="${item.code == S_S_EQ_group }">selected="selected"</c:if>>${item.text }</option>
+												<c:forEach items="${Enums['group'] }" var="item">
+													<option value="${item.key }" <c:if test="${item.key == S_S_EQ_group }">selected="selected"</c:if>>${item.value }</option>
 												</c:forEach>
 											</select>
 										</div>

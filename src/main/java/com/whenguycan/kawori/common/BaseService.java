@@ -16,57 +16,57 @@ import org.nutz.ioc.loader.annotation.IocBean;
  * @author whenguycan
  * @date 2017年4月10日 上午11:16:00
  */
-@IocBean(name = "baseService", args = {"refer:dao"})
-public class BaseService implements IBaseService{
+@IocBean(name = "baseService", args = { "refer:dao" })
+public class BaseService implements IBaseService {
 
 	protected Dao dao;
-	
-	public BaseService(Dao dao){
+
+	public BaseService(Dao dao) {
 		this.dao = dao;
 	}
 
 	@Override
 	public <T> List<T> findList(Class<T> clazz, Cnd cnd, Map<String, Object> params) {
-		if(params != null && params.size() != 0){
-			cnd = cnd==null?Cnd.NEW():cnd;
-			for(Entry<String, Object> e : params.entrySet()){
-				if(e.getValue() != null && !e.getValue().toString().isEmpty()){
+		if (params != null && params.size() != 0) {
+			cnd = cnd == null ? Cnd.NEW() : cnd;
+			for (Entry<String, Object> e : params.entrySet()) {
+				if (e.getValue() != null && !e.getValue().toString().isEmpty()) {
 					cnd.and(explain(e));
 				}
 			}
 		}
 		return dao.query(clazz, cnd);
 	}
-	
+
 	@Override
-	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd, Map<String, Object> params){
-		if(page == null){
+	public <T> Page<T> findPage(Class<T> clazz, Page<T> page, Cnd cnd, Map<String, Object> params) {
+		if (page == null) {
 			page = new Page<T>();
 		}
 		Pager pager = dao.createPager(page.getPageNo(), page.getPageSize());
-		if(params != null && params.size() != 0){
-			cnd = cnd==null?Cnd.NEW():cnd;
-			for(Entry<String, Object> e : params.entrySet()){
-				if(e.getValue() != null && !e.getValue().toString().isEmpty()){
+		if (params != null && params.size() != 0) {
+			cnd = cnd == null ? Cnd.NEW() : cnd;
+			for (Entry<String, Object> e : params.entrySet()) {
+				if (e.getValue() != null && !e.getValue().toString().isEmpty()) {
 					cnd.and(explain(e));
 				}
 			}
 		}
-		Condition cdn = page.getOrder()==null?cnd:cnd.orderBy(page.getOrder().field(), page.getOrder().order());
+		Condition cdn = page.getOrder() == null ? cnd : cnd.orderBy(page.getOrder().field(), page.getOrder().order());
 		List<T> list = dao.query(clazz, cdn, pager);
 		int count = dao.count(clazz, cnd);
 		page.setTotalCount(count);
 		page.setResult(list);
 		return page;
 	}
-	private SqlExpression explain(Entry<String, Object> entry){
+
+	private SqlExpression explain(Entry<String, Object> entry) {
 		String[] x = entry.getKey().split("_");
-		String name = x[x.length-1];
-		String op = x[x.length-2].equals("EQ")?"=":x[x.length-2];
-		Object value = op.equals("LIKE")?"%"+entry.getValue()+"%":entry.getValue();
+		String name = x[x.length - 1];
+		String op = x[x.length - 2].equals("EQ") ? "=" : x[x.length - 2];
+		Object value = op.equals("LIKE") ? "%" + entry.getValue() + "%" : entry.getValue();
 		return Cnd.exp(name, op, value);
 	}
-	
 
 	@Override
 	public <T> T insert(T t) {
@@ -77,25 +77,25 @@ public class BaseService implements IBaseService{
 	public <T> int update(T t) {
 		return dao.update(t);
 	}
-	
+
 	@Override
-	public <T> int delete(Class<T> clazz, Long id){
+	public <T> int delete(Class<T> clazz, Long id) {
 		return dao.delete(clazz, id);
 	}
 
 	@Override
 	public <T> boolean checkFieldNotRepeat(Class<T> clazz, Long id, String fieldName, String fieldValue) {
 		Cnd cnd = Cnd.where(fieldName, "=", fieldValue);
-		if(id != null){
+		if (id != null) {
 			cnd.and(Cnd.exp("ID", "<>", id));
 		}
 		int c = dao.count(clazz, cnd);
-		return c==0?true:false;
+		return c == 0 ? true : false;
 	}
 
 	@Override
 	public <T> void clear(Class<T> clazz, Cnd cnd) {
 		dao.clear(clazz, cnd);
 	}
-	
+
 }

@@ -12,13 +12,13 @@ import com.whenguycan.kawori.anime.User;
  * @date 2017年4月14日 下午2:47:33
  */
 public class LoginManager {
-	
+
 	private static final long tokenTimeOut = 10 * 60 * 1000L;
 	public static final String TOKEN = "accessToken";
 
 	private static Map<String, Token> tokens = new HashMap<String, Token>();
-	
-	public static String login(User user){
+
+	public static String login(User user) {
 		synchronized (tokens) {
 			String accessToken = UUID.randomUUID().toString().replace("-", "");
 			Token token = new Token(user);
@@ -26,52 +26,55 @@ public class LoginManager {
 			return accessToken;
 		}
 	}
-	
-	public static void logOut(String accessToken){
+
+	public static void logOut(String accessToken) {
 		synchronized (tokens) {
 			tokens.remove(accessToken);
 		}
 	}
-	
-	public static Token getToken(String accessToken){
+
+	public static Token getToken(String accessToken) {
 		synchronized (tokens) {
-			if(tokens.containsKey(accessToken)){
+			if (tokens.containsKey(accessToken)) {
 				Token t = tokens.get(accessToken);
-				if(System.currentTimeMillis() > t.getLoginTime() + tokenTimeOut){
+				if (System.currentTimeMillis() > t.getLoginTime() + tokenTimeOut) {
 					tokens.remove(accessToken);
 					return null;
-				}else{
+				} else {
 					t.setLoginTime(System.currentTimeMillis());
 					return t;
 				}
-			}else{
+			} else {
 				return null;
 			}
 		}
 	}
 }
 
-class Token{
-	
+class Token {
+
 	private long loginTime;
 	private User loginUser;
-	
-	public Token(User user){
+
+	public Token(User user) {
 		this.loginTime = System.currentTimeMillis();
 		this.loginUser = user;
 	}
-	
+
 	public long getLoginTime() {
 		return loginTime;
 	}
+
 	public void setLoginTime(long loginTime) {
 		this.loginTime = loginTime;
 	}
+
 	public User getLoginUser() {
 		return loginUser;
 	}
+
 	public void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
-	
+
 }

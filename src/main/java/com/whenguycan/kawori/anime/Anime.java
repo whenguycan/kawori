@@ -4,10 +4,9 @@ import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
-import com.whenguycan.kawori.common.Group;
-import com.whenguycan.kawori.common.Season;
-import com.whenguycan.kawori.common.Status;
-import com.whenguycan.kawori.common.StringUtils;
+import com.whenguycan.kawori.common.enums.Group;
+import com.whenguycan.kawori.common.enums.Status;
+import com.whenguycan.kawori.common.utils.StringUtils;
 
 /**
  * 
@@ -15,123 +14,138 @@ import com.whenguycan.kawori.common.StringUtils;
  * @date 2017年4月10日 上午11:21:50
  */
 @Table("t_e_anime")
-public class Anime{
+public class Anime {
 
 	@Id
 	@Column("ID")
 	private Long id;
-	
+
 	@Column("f_name")
 	private String name;
 	@Column("f_group")
-	private Group group;
+	private String group;
 	@Column("f_curr")
 	private Integer curr;
 	@Column("f_all")
 	private Integer all;
 	@Column("f_season")
-	private Season season;
+	private String season;
 	@Column("f_status")
-	private Status status;
+	private String status;
 	@Column("f_creator")
 	private Long creator;
-	
-	public Anime(){
-		
+
+	public Anime() {
+
 	}
-	
-	public static Anime create(String line){
-		if(!StringUtils.isNotBlank(line)){
+
+	public static Anime create(String line) {
+		if (!StringUtils.isNotBlank(line)) {
 			return null;
 		}
 		char pre = line.charAt(0);
-		if(pre != '-'){
+		if (pre != '-') {
 			return null;
 		}
 		String[] info = line.split("-+");
-		if(info == null || info.length < 2){
+		if (info == null || info.length < 2) {
 			return null;
 		}
 		Anime anime = new Anime();
 		anime.setName(info[1]);
-		if(info.length > 2){
-			anime.setSeason(Season.forName(info[2]));
+		if (info.length > 2) {
+			anime.setSeason(info[2]);
 		}
-		if(info.length > 3){
+		if (info.length > 3) {
 			try {
 				int curr = Integer.parseInt(info[3]);
 				anime.setCurr(curr);
 			} catch (Exception e) {
-				System.out.println("error curr : "+info[3]);
+				System.out.println("error curr : " + info[3]);
 			}
 		}
-		if(info.length > 4){
+		if (info.length > 4) {
 			try {
 				int all = Integer.parseInt(info[4]);
 				anime.setAll(all);
 			} catch (Exception e) {
-				System.out.println("error all : "+info[4]);
+				System.out.println("error all : " + info[4]);
 			}
 		}
 		return anime;
 	}
-	
-	public Group generateGroup(){
+
+	public String generateGroup() {
 		this.group = Group.generateGroup(this.name);
 		return this.group;
 	}
-	
-	public void generateStatus(){
-		this.status = this.curr!=null&&this.all!=null&&this.curr.intValue()==this.all.intValue()?Status.END:Status.ING;
+
+	public void generateStatus() {
+		this.status = this.curr != null && this.all != null && this.curr.intValue() == this.all.intValue() ? Status.END.code() : Status.ING.code();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getCurr() {
 		return curr;
 	}
+
 	public void setCurr(Integer curr) {
 		this.curr = curr;
 	}
+
 	public Integer getAll() {
 		return all;
 	}
+
 	public void setAll(Integer all) {
 		this.all = all;
 	}
-	public Season getSeason() {
-		return season;
-	}
-	public void setSeason(Season season) {
-		this.season = season;
-	}
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public Long getCreator() {
 		return creator;
 	}
+
 	public void setCreator(Long creator) {
 		this.creator = creator;
 	}
-	public Group getGroup() {
+
+	public String getGroup(){
 		return group;
 	}
-	public void setGroup(Group group) {
+
+	public void setGroup(String group){
 		this.group = group;
 	}
-	
+
+	public String getSeason(){
+		return season;
+	}
+
+	public void setSeason(String season){
+		this.season = season;
+	}
+
+	public String getStatus(){
+		return status;
+	}
+
+	public void setStatus(String status){
+		this.status = status;
+	}
+
 }
